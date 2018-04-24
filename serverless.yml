@@ -1,0 +1,16 @@
+service: synerbot
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  stage: prod
+  environment:
+    API_USERID: ${file(./conf/config.${self:provider.stage}.json):API_USERID}
+    API_USERNAME: ${file(./conf/config.${self:provider.stage}.json):API_USERNAME}
+    API_ENDPOINT: ${file(./conf/config.${self:provider.stage}.json):API_ENDPOINT}
+
+functions:
+  giveMeInfo:
+    handler: handler.giveMeInfo
+    events:
+      - alexaSkill

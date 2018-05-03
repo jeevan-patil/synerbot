@@ -11,6 +11,16 @@ provider:
 
 functions:
   giveMeInfo:
+    description: Handler method for alexa voice enabled skill.
     handler: handler.giveMeInfo
     events:
       - alexaSkill
+  ProvideMeInfo:
+    description: Handler method for conversational lex bot.
+    handler: handler.provideMeInfo
+  greetConversationalBot:
+    description: Handler method for greet lex bot.
+    handler: handler.greetConversationalBot
+  thankConversationalBot:
+    description: Handler method for thank lex bot.
+    handler: handler.thankConversationalBot

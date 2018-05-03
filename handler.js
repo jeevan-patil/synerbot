@@ -21,6 +21,25 @@ const answer = (title, message, closeSession) => {
   }
 }
 
+function close(sessionAttributes, fulfillmentState, message, responseCard) {
+  return {
+    sessionAttributes,
+    dialogAction: {
+      type: 'Close',
+      fulfillmentState,
+      message,
+      responseCard,
+    },
+  };
+}
+
+function buildMessage(message) {
+  return {
+    contentType: 'PlainText',
+    content: message,
+  };
+}
+
 module.exports.giveMeInfo = (event, context, callback) => {
   const request = event.request;
 
@@ -59,4 +78,35 @@ module.exports.giveMeInfo = (event, context, callback) => {
   } else {
     greet();
   }
+};
+
+module.exports.provideMeInfo = (event, context, callback) => {
+  console.log('provideMeInfo event - ' + JSON.stringify(event));
+  const outputSessionAttributes = event.sessionAttributes || {};
+  var question = event.inputTranscript;
+
+  infoService.searchInfo(question, function (data) {
+    callback(null, close(outputSessionAttributes, 'Fulfilled', buildMessage(data)));
+  });
+};
+
+module.exports.greetConversationalBot = (event, context, callback) => {
+  console.log('provideMeInfo event - ' + JSON.stringify(event));
+  const outputSessionAttributes = event.sessionAttributes || {};
+  var question = event.inputTranscript;
+
+  infoService.searchInfo(question, function (data) {
+    callback(null, close(outputSessionAttributes, 'Fulfilled',
+        buildMessage('Hi. This is your assistant from Synerzip. What can I do for you?')));
+  });
+};
+
+module.exports.thankConversationalBot = (event, context, callback) => {
+  console.log('provideMeInfo event - ' + JSON.stringify(event));
+  const outputSessionAttributes = event.sessionAttributes || {};
+  var question = event.inputTranscript;
+
+  infoService.searchInfo(question, function (data) {
+    callback(null, close(outputSessionAttributes, 'Fulfilled', buildMessage('Thank you. Bye!')));
+  });
 };

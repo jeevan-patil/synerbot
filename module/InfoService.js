@@ -7,6 +7,7 @@ var InfoService = {
         console.log('Error while calling synerbot service.', err);
         couldNotAnswer(callback);
       } else {
+        console.log('synerbot service response - ' + JSON.stringify(res));
         if (res.statusCode === 200) {
           callback(convertDataHumanLanguage(body));
         } else {
@@ -58,6 +59,8 @@ var getRequestBody = function (search) {
       "utterance": search
     })
   };
+
+  console.log('request is - ' + JSON.stringify(options));
 
   return options;
 };

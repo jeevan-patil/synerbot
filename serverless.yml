@@ -24,3 +24,10 @@ functions:
   thankConversationalBot:
     description: Handler method for thank lex bot.
     handler: handler.thankConversationalBot
+  authenticateUser:
+    description: API to get information.
+    handler: handler.provideInfoApi
+    events:
+      - http:
+          path: api/info
+          method: POST

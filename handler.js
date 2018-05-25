@@ -1,6 +1,7 @@
 'use strict';
 
 const infoService = require('./module/InfoService');
+const queryString = require('query-string');
 
 const answer = (title, message, closeSession) => {
   return {
@@ -80,6 +81,19 @@ module.exports.giveMeInfo = (event, context, callback) => {
   }
 };
 
+function buildMattermostMessage(message) {
+    return {
+        "body": JSON.stringify({
+            "response_type": "in_channel",
+            "text": message,
+        }),
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "statusCode": 200,
+    };
+};
+
 module.exports.provideMeInfo = (event, context, callback) => {
   console.log('provideMeInfo event - ' + JSON.stringify(event));
   const outputSessionAttributes = event.sessionAttributes || {};
@@ -108,5 +122,15 @@ module.exports.thankConversationalBot = (event, context, callback) => {
 
   infoService.searchInfo(question, function (data) {
     callback(null, close(outputSessionAttributes, 'Fulfilled', buildMessage('Thank you. Bye!')));
+  });
+};
+
+module.exports.provideInfoApi = (event, context, callback) => {
+  console.log('provideInfoApi event - ' + JSON.stringify(event));
+  const body = queryString.parse(event.body);
+  const searchQuery = body.text;
+
+  infoService.searchInfo(searchQuery, function (data) {
+    callback(null, buildMattermostMessage(data));
   });
 };

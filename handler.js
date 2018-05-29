@@ -57,11 +57,65 @@ module.exports.giveMeInfo = (event, context, callback) => {
 
   if (request.type === 'LaunchRequest' || request.intent.name === 'AMAZON.HelpIntent') {
     greet();
-  } else if (request.type === 'IntentRequest' && request.intent.name === 'GiveMeInfo') {
+  } else if (request.type === 'IntentRequest' && request.intent.name === 'ProvideMeInfo') {
     if (request.intent && request.intent.slots) {
-      const search = request.intent.slots.SearchKey.value;
+      const search = request.intent.slots.Technology.value;
 
-      infoService.searchInfo(search, function (data) {
+      var utter = "What is " + search;
+      infoService.searchInfo(utter, function (data) {
+        callback(null, answer(
+            "Asked for " + search,
+            data,
+            false
+        ));
+      });
+    }
+  } else if (request.type === 'IntentRequest' && request.intent.name === 'DevCount') {
+    if (request.intent && request.intent.slots) {
+      const search = request.intent.slots.Technology.value;
+
+      var utter = "How many developers do we have for " + search;
+      infoService.searchInfo(utter, function (data) {
+        callback(null, answer(
+            "Asked for " + search,
+            data,
+            false
+        ));
+      });
+    }
+  } else if (request.type === 'IntentRequest' && request.intent.name === 'Expertise') {
+    if (request.intent && request.intent.slots) {
+      const search = request.intent.slots.Technology.value;
+
+      var utter = "do we have expertise in " + search;
+      infoService.searchInfo(utter, function (data) {
+        callback(null, answer(
+            "Asked for " + search,
+            data,
+            false
+        ));
+      });
+    }
+  } else if (request.type === 'IntentRequest' && request.intent.name === 'AreaCapability') {
+    if (request.intent && request.intent.slots) {
+      const search = request.intent.slots.Technology.value;
+
+      var utter = "How many " + search + " projects have we worked upon";
+      infoService.searchInfo(utter, function (data) {
+        callback(null, answer(
+            "Asked for " + search,
+            data,
+            false
+        ));
+      });
+    }
+  } else if (request.type === 'IntentRequest' && request.intent.name === 'Comparison') {
+    if (request.intent && request.intent.slots) {
+      const tech = request.intent.slots.Technology.value;
+      const compare = request.intent.slots.CompareTechnology.value;
+
+      var utter = "is " + tech + " better than " + compare;
+      infoService.searchInfo(utter, function (data) {
         callback(null, answer(
             "Asked for " + search,
             data,
